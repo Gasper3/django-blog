@@ -1,0 +1,10 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+<a href="{% url 'homepage' %}">Back</a>
+<h1>Detail of {{ article }}</h1>
+{{ article.content }}
+<p>{{ article.author }}</p>
+
+{% endblock %}
