@@ -4,7 +4,7 @@
 
 <a href="{% url 'homepage' %}">Back</a>
 <h1>Detail of {{ article }}</h1>
-{{ article.content }}
-<p>{{ article.author }}</p>
+{{ article.content|linebreaks }}
+<p>Author: {{ article.author }}</p>
 
 {% endblock %}
