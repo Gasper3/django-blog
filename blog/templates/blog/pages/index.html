@@ -11,4 +11,6 @@
         </li>
     {% endfor %}
 </ul>
+<a href="{% url 'login' %}">Login</a>
+<a href="{% url 'logout' %}?next=/accounts/login">Logout</a>
 {% endblock %}
