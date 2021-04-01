@@ -12,3 +12,8 @@ class IndexView(generic.ListView):
 class ArticleShowView(generic.DetailView):
     model = Article
     template_name = 'blog/article/show.html'
+
+
+class ArticleDetailView(generic.DetailView):
+    model = Article
+    template_name = 'blog/article/edit.html'

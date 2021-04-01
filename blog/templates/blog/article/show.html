@@ -3,8 +3,11 @@
 {% block content %}
 
 <a href="{% url 'homepage' %}">Back</a>
-<h1>Detail of {{ article }}</h1>
+<h1>{{ article }}</h1>
 {{ article.content|linebreaks }}
 <p>Author: {{ article.author }}</p>
 
+{% if user.is_staff or user == article.author %}
+    <a href="{% url 'article_edit' article.slug %}">Edit article</a>
+{% endif %}
 {% endblock %}

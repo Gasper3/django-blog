@@ -4,14 +4,19 @@
 {% if user.is_authenticated %}
     <p>You are already logged in</p>
 {% else %}
-    <h1>Login</h1>
-    <form method="post" action="{% url 'login' %}">
+    <form class="form-signin" method="post" action="{% url 'login' %}">
         {% csrf_token %}
-        <p>Username</p>
-        <input type="text" name="username">
-        <p>Password</p>
-        <input type="password" name="password">
-        <input type="submit" value="Zaloguj">
+        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        <input type="text" id="inputUsername" name="username" class="form-control" placeholder="Username" required autofocus>
+        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+<!--
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" value="remember-me"> Remember me
+            </label>
+        </div>
+-->
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         <input type="hidden" name="next" value="/">
     </form>
 {% endif %}
