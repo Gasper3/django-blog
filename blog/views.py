@@ -25,7 +25,6 @@ class ArticleDetailView(generic.DetailView):
 
     def get(self, request, *args, **kwargs):
         article = Article.objects.get(slug=kwargs['slug'])
-        pprint(article)
-        if request.user != article.author:
+        if request.user != article.author and (not request.user.is_superuser):
             return redirect('homepage', permanent=True)
         return super().get(self, request)

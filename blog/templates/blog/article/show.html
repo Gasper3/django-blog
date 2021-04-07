@@ -1,8 +1,6 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-
-<a href="{% url 'homepage' %}">Back</a>
 <h1>{{ article }}</h1>
 {{ article.content|linebreaks }}
 <p>Author: {{ article.author }}</p>
