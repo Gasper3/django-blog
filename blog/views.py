@@ -1,10 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .models import Article
-
-from pprint import pprint
 
 
 class IndexView(generic.ListView):
@@ -28,3 +26,13 @@ class ArticleDetailView(generic.DetailView):
         if request.user != article.author and (not request.user.is_superuser):
             return redirect('homepage', permanent=True)
         return super().get(self, request)
+
+    def post(self, request, slug):
+        article = Article.objects.get(slug=slug)
+        article.title = request.POST['article_title']
+        article.content = request.POST['article_content']
+        article.save()
+        return render(request, self.template_name, {
+            'article': article,
+            'message': "Article edited"
+        })
