@@ -2,7 +2,9 @@ from django.shortcuts import redirect, render
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+
 from .models import Article
+from .forms import ArticleForm
 
 
 class IndexView(generic.ListView):
@@ -17,9 +19,10 @@ class ArticleShowView(generic.DetailView):
 
 
 @method_decorator(login_required, name='get')
-class ArticleDetailView(generic.DetailView):
+class ArticleDetailView(generic.UpdateView):
     model = Article
     template_name = 'blog/article/edit.html'
+    form_class = ArticleForm
 
     def get(self, request, *args, **kwargs):
         article = Article.objects.get(slug=kwargs['slug'])
@@ -27,12 +30,3 @@ class ArticleDetailView(generic.DetailView):
             return redirect('homepage', permanent=True)
         return super().get(self, request)
 
-    def post(self, request, slug):
-        article = Article.objects.get(slug=slug)
-        article.title = request.POST['article_title']
-        article.content = request.POST['article_content']
-        article.save()
-        return render(request, self.template_name, {
-            'article': article,
-            'message': "Article edited"
-        })

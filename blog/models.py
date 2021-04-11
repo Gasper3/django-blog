@@ -16,5 +16,8 @@ class Article(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     status = models.IntegerField(choices=STATUS, default=0)
 
+    def get_absolute_url(self):
+        return '/article/%s/' % self.slug
+
     def __str__(self):
         return self.title
