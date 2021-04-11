@@ -7,7 +7,7 @@ My first app writen in Django. It's simple blog app.
 
 ## TODO
 * working comments
-* number of views
+* number of article views
 
 ## Status
 Project is: _in progress_
