@@ -44,6 +44,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             {% if user.is_authenticated %}
+                                <li><a class="dropdown-item" href="{% url 'article_create' %}">Create article</a></li>
                                 {% if user.is_staff %}
                                     <li><a class="dropdown-item" href="{% url 'admin:index' %}">Admin panel</a></li>
                                 {% endif %}
