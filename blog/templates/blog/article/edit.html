@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1>Article edit: {{ article }}</h1>
-    <form method="post">
+    <form method="post" action="{% url 'article_edit' article.slug %}">
         {% csrf_token %}
         <div class="form-group">
             {% for field in form %}

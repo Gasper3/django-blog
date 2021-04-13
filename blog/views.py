@@ -2,13 +2,14 @@ from django.shortcuts import redirect, render
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.utils.text import slugify
 
 from .models import Article
 from .forms import ArticleForm
 
 
 class IndexView(generic.ListView):
-    queryset = Article.objects.filter(status=1).order_by('-created_at')
+    queryset = Article.objects.filter(status=1).order_by('-created_at')[:3]
     template_name = 'blog/pages/index.html'
     context_object_name = 'articles'
 
@@ -25,7 +26,7 @@ class ArticleUpdateView(generic.UpdateView):
     form_class = ArticleForm
 
     def get(self, request, *args, **kwargs):
-        article = Article.objects.get(slug=kwargs['slug'])
+        article = self.get_object()
         if request.user != article.author and (not request.user.is_superuser):
             return redirect('homepage', permanent=True)
         return super().get(self, request)
@@ -40,5 +41,6 @@ class ArticleCreateView(generic.CreateView):
     def form_valid(self, form):
         article = form.save(commit=False)
         article.author = self.request.user
+        article.slug = slugify(article.title)
         article.save()
         return redirect(article.get_absolute_url())
