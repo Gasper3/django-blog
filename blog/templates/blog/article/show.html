@@ -3,7 +3,7 @@
 {% block content %}
 <h1>{{ article }}</h1>
 {{ article.content|linebreaks }}
-<p>Author: {{ article.author }}</p>
+<p>Author: {{ article.author.get_full_name }}</p>
 
 {% if user.is_staff or user == article.author %}
     <a href="{% url 'article_edit' article.slug %}">Edit article</a>

@@ -2,8 +2,9 @@ from django.shortcuts import redirect, render
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.http import HttpResponseNotFound
 
-from .models import Article
+from .models import Article, STATUS
 from .forms import ArticleForm
 
 
@@ -16,6 +17,12 @@ class IndexView(generic.ListView):
 class ArticleDetailView(generic.DetailView):
     model = Article
     template_name = 'blog/article/show.html'
+
+    def get(self, request, *args, **kwargs):
+        article = self.get_object()
+        if article.status != STATUS[1][0]:
+            return HttpResponseNotFound("Article does not exists")
+        return super(ArticleDetailView, self).get(request, *args, **kwargs)
 
 
 @method_decorator(login_required, name='get')
