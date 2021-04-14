@@ -2,7 +2,6 @@ from django.shortcuts import redirect, render
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.utils.text import slugify
 
 from .models import Article
 from .forms import ArticleForm
@@ -41,6 +40,5 @@ class ArticleCreateView(generic.CreateView):
     def form_valid(self, form):
         article = form.save(commit=False)
         article.author = self.request.user
-        article.slug = slugify(article.title)
         article.save()
         return redirect(article.get_absolute_url())

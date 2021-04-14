@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 
 STATUS = (
     (0, 'Draft'),
@@ -18,6 +19,10 @@ class Article(models.Model):
 
     def get_absolute_url(self):
         return '/article/%s/' % self.slug
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        return super(Article, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
