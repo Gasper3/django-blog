@@ -16,6 +16,7 @@ class Article(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     status = models.IntegerField(choices=STATUS, default=0)
+    is_deleted = models.BooleanField(default=False)
 
     def get_absolute_url(self):
         return '/article/%s/' % self.slug
@@ -26,3 +27,15 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Comment(models.Model):
+    content = models.CharField(max_length=200)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.content

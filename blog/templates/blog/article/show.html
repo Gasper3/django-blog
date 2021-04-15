@@ -1,11 +1,22 @@
 {% extends 'blog/base.html' %}
 
-{% block content %}
-<h1>{{ article }}</h1>
-{{ article.content|linebreaks }}
-<p>Author: {{ article.author.get_full_name }}</p>
+{% block scripts %}
+{% load static %}
+<script src="{% static 'blog/js/comments.js' %}"></script>
+{% endblock %}
 
-{% if user.is_staff or user == article.author %}
-    <a href="{% url 'article_edit' article.slug %}">Edit article</a>
-{% endif %}
+{% block content %}
+    <h1>{{ article }}</h1>
+    {{ article.content|linebreaks }}
+    <p>Author: {{ article.author.get_full_name }}</p>
+
+    {% if user.is_staff or user == article.author %}
+        <a href="{% url 'article_edit' article.slug %}">Edit article</a>
+    {% endif %}
+
+    <h2>Comments ({{ article.comment_set.count }})</h2>
+    {% for comment in article.comment_set.all %}
+        <span>{{ comment.author }}</span>
+        <p>{{ comment }}</p>
+    {% endfor %}
 {% endblock %}
