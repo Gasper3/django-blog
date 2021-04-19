@@ -1,5 +1,5 @@
-from django.forms import ModelForm, Textarea, TextInput, Select
-from .models import Article
+from django.forms import ModelForm, Textarea, TextInput, Select, HiddenInput
+from .models import Article, Comment
 
 
 class ArticleForm(ModelForm):
@@ -10,4 +10,13 @@ class ArticleForm(ModelForm):
             'title': TextInput(attrs={'class': 'form-control'}),
             'content': Textarea(attrs={'class': 'form-control'}),
             'status': Select(attrs={'class': 'form-control'}),
+        }
+
+
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+        widgets = {
+            'content': TextInput(attrs={'class': 'form-control'}),
         }

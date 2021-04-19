@@ -10,7 +10,22 @@
     {% endif %}
 
     <h2>Comments ({{ article.comment_set.count }})</h2>
-    {% for comment in article.comment_set.all %}
+    {% if user.is_authenticated %}
+        <form method="post" action="{% url 'comment_create' %}" class="row">
+            {% csrf_token %}
+            <div class="form-group col-md-3">
+                {% for field in comment_form %}
+                    {{ field.errors }}
+                    {{ field }}
+                {% endfor %}
+                <input type="hidden" name="article" value="{{ article.id }}">
+            </div>
+            <div class="form-group mt-3 col-md-9">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    {% endif %}
+    {% for comment in article.comment_set.all|dictsortreversed:"created_at" %}
         <span>{{ comment.author }}</span>
         <p>{{ comment }}</p>
     {% endfor %}
