@@ -11,7 +11,7 @@ STATUS = (
 class Article(models.Model):
     title = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_articles')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='article_author')
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -31,8 +31,8 @@ class Article(models.Model):
 
 class Comment(models.Model):
     content = models.CharField(max_length=200)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comment_author')
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comment_article')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
