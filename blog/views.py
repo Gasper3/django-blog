@@ -14,6 +14,12 @@ class IndexView(generic.ListView):
     context_object_name = 'articles'
 
 
+class AllArticlesView(generic.ListView):
+    queryset = Article.objects.filter(status=1).order_by('-created_at')
+    template_name = 'blog/pages/all_articles.html'
+    context_object_name = 'articles'
+
+
 class ArticleDetailView(generic.DetailView):
     model = Article
     template_name = 'blog/article/show.html'
