@@ -1,4 +1,5 @@
-from django.forms import ModelForm, Textarea, TextInput, Select, HiddenInput
+from django.forms import ModelForm, Textarea, TextInput, Select, PasswordInput, EmailInput
+from django.contrib.auth.models import User
 from .models import Article, Comment
 
 
@@ -7,10 +8,15 @@ class ArticleForm(ModelForm):
         model = Article
         fields = ['title', 'content', 'status']
         widgets = {
-            'title': TextInput(attrs={'class': 'form-control'}),
-            'content': Textarea(attrs={'class': 'form-control'}),
-            'status': Select(attrs={'class': 'form-control'}),
+            'title': TextInput,
+            'content': Textarea,
+            'status': Select,
         }
+
+    def __init__(self, *args, **kwargs):
+        super(ArticleForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
 
 
 class CommentForm(ModelForm):
@@ -18,5 +24,25 @@ class CommentForm(ModelForm):
         model = Comment
         fields = ['content']
         widgets = {
-            'content': TextInput(attrs={'class': 'form-control'}),
+            'content': TextInput(),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+
+class UserForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email', 'password']
+        widgets = {
+            'password': PasswordInput,
+            'email': EmailInput,
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'

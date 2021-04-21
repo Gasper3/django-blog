@@ -9,7 +9,7 @@
         <a href="{% url 'article_edit' article.slug %}">Edit article</a>
     {% endif %}
 
-    <h2>Comments ({{ article.comment_set.count }})</h2>
+    <h2>Comments ({{ article.comments.count }})</h2>
     {% if user.is_authenticated %}
         <form method="post" action="{% url 'comment_create' %}" class="row">
             {% csrf_token %}
@@ -25,7 +25,7 @@
             </div>
         </form>
     {% endif %}
-    {% for comment in article.comment_set.all|dictsortreversed:"created_at" %}
+    {% for comment in article.comments.all|dictsortreversed:"created_at" %}
         <span>{{ comment.author }}</span>
         <p>{{ comment }}</p>
     {% endfor %}

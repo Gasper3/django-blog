@@ -1,11 +1,12 @@
 from django.shortcuts import redirect, render
 from django.views import generic
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseNotFound
 
 from .models import Article, STATUS, Comment
-from .forms import ArticleForm, CommentForm
+from .forms import ArticleForm, CommentForm, UserForm
 
 
 class IndexView(generic.ListView):
@@ -77,3 +78,21 @@ class CommentCreateView(generic.CreateView):
         comment.article = article
         comment.save()
         return redirect(article.get_absolute_url())
+
+
+class RegisterView(generic.CreateView):
+    model = User
+    template_name = 'registration/register.html'
+    form_class = UserForm
+
+    def form_valid(self, form):
+        user = User.objects.create_user(
+            form.cleaned_data.get('username'),
+            form.cleaned_data.get('email'),
+            form.cleaned_data.get('password')
+        )
+        user.first_name = form.cleaned_data.get('first_name')
+        user.last_name = form.cleaned_data.get('last_name')
+        user.save()
+
+        return redirect('login')
