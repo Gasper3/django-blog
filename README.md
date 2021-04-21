@@ -6,8 +6,9 @@ My first app writen in Django. It's simple blog app.
 * Django 3.1.7
 
 ## TODO
-* working comments
 * number of article views
+* article likes (number of given hearts from users)
+* crispy forms
 
 ## Status
 Project is: _in progress_
