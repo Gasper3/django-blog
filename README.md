@@ -9,6 +9,7 @@ My first app writen in Django. It's simple blog app.
 * number of article views
 * article likes (number of given hearts from users)
 * crispy forms
+* error/ success messages
 
 ## Status
 Project is: _in progress_
