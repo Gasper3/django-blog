@@ -1,32 +1,32 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-    <h1>{{ article }}</h1>
-    {{ article.content|linebreaks }}
-    <p>Author: {{ article.author.get_full_name }}</p>
+    <div class="col-md-12">
+        <h1>{{ article }}</h1>
+        {{ article.content|linebreaks }}
+        <p>Author: {{ article.author.get_full_name }}</p>
 
-    {% if user.is_staff or user == article.author %}
-        <a href="{% url 'article_edit' article.slug %}">Edit article</a>
-    {% endif %}
+        {% if user.is_staff or user == article.author %}
+            <a href="{% url 'article_edit' article.slug %}">Edit article</a>
+        {% endif %}
 
-    <h2>Comments ({{ article.comments.count }})</h2>
-    {% if user.is_authenticated %}
-        <form method="post" action="{% url 'comment_create' %}" class="row">
-            {% csrf_token %}
-            <div class="form-group col-md-3">
-                {% for field in comment_form %}
-                    {{ field.errors }}
-                    {{ field }}
-                {% endfor %}
-                <input type="hidden" name="article" value="{{ article.id }}">
-            </div>
-            <div class="form-group mt-3 col-md-9">
+        <h2>Comments ({{ article.comments.count }})</h2>
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'comment_create' %}" class="form-inline">
+                {% csrf_token %}
+                <div class="form-group mr-sm-2">
+                    {% for field in comment_form %}
+                        {{ field.errors }}
+                        {{ field }}
+                    {% endfor %}
+                    <input type="hidden" name="article" value="{{ article.id }}">
+                </div>
                 <button type="submit" class="btn btn-primary">Save</button>
-            </div>
-        </form>
-    {% endif %}
-    {% for comment in article.comments.all|dictsortreversed:"created_at" %}
-        <span>{{ comment.author }}</span>
-        <p>{{ comment }}</p>
-    {% endfor %}
+            </form>
+        {% endif %}
+        {% for comment in article.comments.all|dictsortreversed:"created_at" %}
+            <span>{{ comment.author }}</span>
+            <p>{{ comment }}</p>
+        {% endfor %}
+    </div>
 {% endblock %}

@@ -2,13 +2,15 @@
 {% block title%}Homepage{% endblock %}
 
 {% block content %}
-<h1>Homepage</h1>
-<ul>
-    {% for article in articles %}
-        <li>
-            {{ article }}
-            <a href="{% url 'article_show' article.slug %}">Read more</a>
-        </li>
-    {% endfor %}
-</ul>
+    <div class="col-md-12">
+        <h1>Homepage</h1>
+        <ul>
+            {% for article in articles %}
+                <li>
+                    {{ article }}
+                    <a href="{% url 'article_show' article.slug %}">Read more</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}
