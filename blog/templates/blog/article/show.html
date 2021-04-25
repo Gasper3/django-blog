@@ -2,31 +2,41 @@
 
 {% block content %}
     <div class="col-md-12">
-        <h1>{{ article }}</h1>
-        {{ article.content|linebreaks }}
-        <p>Author: {{ article.author.get_full_name }}</p>
+        <div class="article p-2 mb-2">
+            <h1>{{ article }}</h1>
+            {{ article.content|linebreaks }}
+            <p>Author: {{ article.author.get_full_name }}</p>
 
-        {% if user.is_staff or user == article.author %}
-            <a href="{% url 'article_edit' article.slug %}">Edit article</a>
-        {% endif %}
-
-        <h2>Comments ({{ article.comments.count }})</h2>
-        {% if user.is_authenticated %}
-            <form method="post" action="{% url 'comment_create' %}" class="form-inline">
-                {% csrf_token %}
-                <div class="form-group mr-sm-2">
-                    {% for field in comment_form %}
-                        {{ field.errors }}
-                        {{ field }}
-                    {% endfor %}
-                    <input type="hidden" name="article" value="{{ article.id }}">
-                </div>
-                <button type="submit" class="btn btn-primary">Save</button>
-            </form>
-        {% endif %}
+            {% if user.is_staff or user == article.author %}
+                <a href="{% url 'article_edit' article.slug %}">Edit article</a>
+            {% endif %}
+        </div>
+        <div class="col-md-12 p-0">
+            <h2>Comments ({{ article.comments.count }})</h2>
+            {% if user.is_authenticated %}
+                <form method="post" action="{% url 'comment_create' %}" class="form-inline">
+                    {% csrf_token %}
+                    <div class="form-group mr-sm-2">
+                        {% for field in comment_form %}
+                            {{ field.errors }}
+                            {{ field }}
+                        {% endfor %}
+                        <input type="hidden" name="article" value="{{ article.id }}">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            {% endif %}
+        </div>
         {% for comment in article.comments.all|dictsortreversed:"created_at" %}
-            <span>{{ comment.author }}</span>
-            <p>{{ comment }}</p>
+            <div class="row my-4 mx-auto p-2 comment">
+                <img src="https://robohash.org/{{ comment.author }}?set=any&size=50x50" class="user-img">
+                <div class="col-md-8">
+                    <div class="col-12">
+                        <span class="font-weight-bold">{{ comment.author }}</span>
+                    </div>
+                    <div class="col-12">{{ comment }}</div>
+                </div>
+            </div>
         {% endfor %}
     </div>
 {% endblock %}
