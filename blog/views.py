@@ -29,12 +29,15 @@ class ArticleDetailView(generic.DetailView):
         article = self.get_object()
         if article.status != STATUS[1][0]:
             return HttpResponseNotFound("Article does not exists")
+
         return super(ArticleDetailView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(ArticleDetailView, self).get_context_data(**kwargs)
+        comments = Comment.objects.filter(is_deleted=False, article=self.get_object())
         context.update({
             'comment_form': CommentForm,
+            'comments': comments
         })
 
         return context
@@ -50,6 +53,7 @@ class ArticleUpdateView(generic.UpdateView):
         article = self.get_object()
         if request.user != article.author and (not request.user.is_superuser):
             return redirect('homepage', permanent=True)
+
         return super().get(self, request)
 
 
@@ -63,6 +67,7 @@ class ArticleCreateView(generic.CreateView):
         article = form.save(commit=False)
         article.author = self.request.user
         article.save()
+
         return redirect(article.get_absolute_url())
 
 
@@ -77,6 +82,7 @@ class CommentCreateView(generic.CreateView):
         comment.author = self.request.user
         comment.article = article
         comment.save()
+
         return redirect(article.get_absolute_url())
 
 
