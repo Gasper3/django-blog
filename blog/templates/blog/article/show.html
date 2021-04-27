@@ -27,7 +27,7 @@
                 </form>
             {% endif %}
         </div>
-        {% for comment in comments|dictsortreversed:"created_at" %}
+        {% for comment in comments %}
             <div class="row my-3 mx-auto p-2 comment">
                 <img src="https://robohash.org/{{ comment.author }}?set=any&size=50x50" class="user-img">
                 <div class="col-md-8">

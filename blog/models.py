@@ -23,6 +23,7 @@ class Article(models.Model):
 
     def delete(self, using=None, keep_parents=False):
         self.is_deleted = True
+        self.save()
 
     def get_absolute_url(self):
         return '/article/%s/' % self.slug

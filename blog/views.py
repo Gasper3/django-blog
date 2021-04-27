@@ -34,7 +34,7 @@ class ArticleDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ArticleDetailView, self).get_context_data(**kwargs)
-        comments = Comment.objects.filter(is_deleted=False, article=self.get_object())
+        comments = Comment.objects.filter(is_deleted=False, article=self.get_object()).order_by('-created_at')
         context.update({
             'comment_form': CommentForm,
             'comments': comments
@@ -77,6 +77,7 @@ class CommentCreateView(generic.CreateView):
     form_class = CommentForm
 
     def form_valid(self, form):
+        # TODO - do this in better way
         article = Article.objects.get(pk=self.request.POST['article'])
         comment = form.save(commit=False)
         comment.author = self.request.user
