@@ -10,13 +10,13 @@ from .forms import ArticleForm, CommentForm, UserForm
 
 
 class IndexView(generic.ListView):
-    queryset = Article.objects.filter(status=1).order_by('-created_at')[:3]
+    queryset = Article.objects.filter(status=1, is_deleted=False).order_by('-created_at')[:3]
     template_name = 'blog/pages/index.html'
     context_object_name = 'articles'
 
 
 class AllArticlesView(generic.ListView):
-    queryset = Article.objects.filter(status=1).order_by('-created_at')
+    queryset = Article.objects.filter(status=1, is_deleted=False).order_by('-created_at')
     template_name = 'blog/pages/all_articles.html'
     context_object_name = 'articles'
 

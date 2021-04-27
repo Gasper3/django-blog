@@ -18,15 +18,18 @@ class Article(models.Model):
     status = models.IntegerField(choices=STATUS, default=0)
     is_deleted = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.title
+
+    def delete(self, using=None, keep_parents=False):
+        self.is_deleted = True
+
     def get_absolute_url(self):
         return '/article/%s/' % self.slug
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         return super(Article, self).save(*args, **kwargs)
-
-    def __str__(self):
-        return self.title
 
 
 class Comment(models.Model):
