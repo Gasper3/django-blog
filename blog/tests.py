@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
+from pprint import pprint
 
 from blog.models import Article, Comment
 
@@ -9,8 +10,8 @@ def create_article(title, content, author, is_deleted=False, status=1) -> Articl
     return Article.objects.create(title=title, content=content, author=author, status=status, is_deleted=is_deleted)
 
 
-def create_comment_to_article(article: Article, content, author: User) -> Comment:
-    return Comment.objects.create(article=article, content=content, author=author)
+def create_comment_to_article(article: Article, content, author: User, is_deleted=False) -> Comment:
+    return Comment.objects.create(article=article, content=content, author=author, is_deleted=is_deleted)
 
 
 def create_superuser(username) -> User:
@@ -84,3 +85,37 @@ class ArticleDetailViewTests(TestCase):
         self.assertEqual(len(comments), 3)
         # TODO - assert objects not contents if its possible
         self.assertQuerysetEqual(comments, [comment3.content, comment2.content, comment1.content], transform=str)
+
+    def test_comments_deleted(self):
+        user = create_user('user')
+        comment_author = create_user('Comment author')
+        article = create_article('Article title', 'content', user)
+
+        create_comment_to_article(article, 'Nice article', comment_author, True)
+        comment = create_comment_to_article(article, 'Nicely done', comment_author)
+        create_comment_to_article(article, 'Wow! Nice!', comment_author, True)
+
+        url = reverse('article_show', args=(article.slug,))
+        response = self.client.get(url)
+        comments = response.context['comments']
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(comments), 1)
+        # TODO - assert objects not contents if its possible
+        self.assertQuerysetEqual(comments, [comment.content], transform=str)
+
+
+class ArticleUpdateViewTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.admin = create_superuser('admin')
+        cls.user = create_user('user')
+
+    def test_not_logged_in(self):
+        article = create_article('Article title', 'Content', self.admin)
+
+        url = reverse('article_edit', args=(article.slug,))
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(reverse('login'), response.url)
