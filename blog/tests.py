@@ -119,3 +119,42 @@ class ArticleUpdateViewTests(TestCase):
 
         self.assertEqual(response.status_code, 302)
         self.assertIn(reverse('login'), response.url)
+
+    def test_logged_user(self):
+        article = create_article('Article title', 'Content', self.user)
+
+        url = reverse('article_edit', args=(article.slug,))
+        is_logged = self.client.login(username=self.user.username, password='qwe')
+        if is_logged:
+            response = self.client.get(url)
+
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.context['article'].title, article.title)
+        else:
+            raise self.failureException('User is not logged in')
+
+    def test_logged_user_no_permissions(self):
+        article = create_article('Article title', 'Content', self.admin)
+
+        url = reverse('article_edit', args=(article.slug,))
+        is_logged = self.client.login(username=self.user.username, password='qwe')
+        if is_logged:
+            response = self.client.get(url)
+
+            self.assertEqual(response.status_code, 301)
+        else:
+            raise self.failureException('User is not logged in')
+
+    def test_logged_superuser_not_author(self):
+        article = create_article('Article title', 'Content', self.user)
+
+        url = reverse('article_edit', args=(article.slug,))
+        is_logged = self.client.login(username=self.admin.username, password='qwe')
+        if is_logged:
+            response = self.client.get(url)
+
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.context['article'].title, article.title)
+        else:
+            raise self.failureException('User is not logged in')
+
