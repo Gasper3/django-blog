@@ -2,6 +2,7 @@
 
 {% block content %}
     <div class="col-md-12">
+        {% include 'components/messages.html' %}
         <div class="article p-2 mb-2">
             <h1>{{ article }}</h1>
             {{ article.content|linebreaks }}

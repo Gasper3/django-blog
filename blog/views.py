@@ -1,9 +1,11 @@
 from django.shortcuts import redirect
 from django.views import generic
+from django.urls import reverse
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, HttpResponseForbidden
 
 from .models import Article, STATUS, Comment
 from .forms import ArticleForm, CommentForm, UserForm
@@ -52,8 +54,8 @@ class ArticleUpdateView(generic.UpdateView):
     def get(self, request, *args, **kwargs):
         article = self.get_object()
         if request.user != article.author and (not request.user.is_superuser):
-            # TODO - message "You do not have permissions to edit this article", status 403
-            return redirect('homepage', permanent=True)
+            messages.error(request, 'You do not have permissions to edit this article', 'alert-danger')
+            return redirect(reverse('article_show', args=(article.slug,)))
 
         return super().get(self, request)
 
