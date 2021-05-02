@@ -52,7 +52,7 @@ class ArticleUpdateView(generic.UpdateView):
     def get(self, request, *args, **kwargs):
         article = self.get_object()
         if request.user != article.author and (not request.user.is_superuser):
-            # TODO - message "You do not have permissions to edit this article"
+            # TODO - message "You do not have permissions to edit this article", status 403
             return redirect('homepage', permanent=True)
 
         return super().get(self, request)
