@@ -55,7 +55,7 @@ class ArticleUpdateView(generic.UpdateView):
         article = self.get_object()
         if request.user != article.author and (not request.user.is_superuser):
             messages.error(request, 'You do not have permissions to edit this article', 'alert-danger')
-            return redirect(reverse('article_show', args=(article.slug,)))
+            return redirect(reverse('article_show', args=(article.slug,)), permanent=True)
 
         return super().get(self, request)
 

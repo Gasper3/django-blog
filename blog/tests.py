@@ -136,9 +136,9 @@ class ArticleUpdateViewTests(TestCase):
     def test_logged_user_no_permissions(self):
         article = create_article('Article title', 'Content', self.admin)
 
-        url = reverse('article_edit', args=(article.slug,))
         is_logged = self.client.login(username=self.user.username, password='qwe')
         if is_logged:
+            url = reverse('article_edit', args=(article.slug,))
             response = self.client.get(url)
 
             self.assertEqual(response.status_code, 301)
