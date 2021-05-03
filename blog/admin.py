@@ -12,7 +12,6 @@ class ArticleAdmin(admin.ModelAdmin):
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('content', 'article', 'author', 'created_at', 'is_deleted',)
-    list_filter = ('article',)
 
 
 admin.site.register(Article, ArticleAdmin)
