@@ -21,3 +21,8 @@ class RegisterView(generic.CreateView):
         user.save()
 
         return redirect('login')
+
+
+class AccountView(generic.DetailView):
+    model = User
+    template_name = 'account/details.html'
