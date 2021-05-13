@@ -1,9 +1,10 @@
-{% extends 'blog/base.html' %}
+{% extends 'base.html' %}
 {% block title%}Homepage{% endblock %}
 
 {% block content %}
     <div class="col-md-12">
-        <h1>All articles</h1>
+        {% include 'components/messages.html' %}
+        <h1>Homepage</h1>
         <ul>
             {% for article in articles %}
                 <li>
