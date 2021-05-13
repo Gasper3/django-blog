@@ -1,11 +1,11 @@
 from django.urls import path
-from .views import *
+from . import views
 
 urlpatterns = [
-    path('', IndexView.as_view(), name='homepage'),
-    path('article/<slug:slug>', ArticleDetailView.as_view(), name='article_show'),
-    path('article/edit/<slug:slug>', ArticleUpdateView.as_view(), name='article_edit'),
-    path('article/create', ArticleCreateView.as_view(), name='article_create'),
-    path('comment/create', CommentCreateView.as_view(), name='comment_create'),
-    path('articles', AllArticlesView.as_view(), name='all_articles')
+    path('', views.IndexView.as_view(), name='homepage'),
+    path('article/<slug:slug>', views.ArticleDetailView.as_view(), name='article_show'),
+    path('article/edit/<slug:slug>', views.ArticleUpdateView.as_view(), name='article_edit'),
+    path('article/create', views.ArticleCreateView.as_view(), name='article_create'),
+    path('comment/create', views.CommentCreateView.as_view(), name='comment_create'),
+    path('articles', views.AllArticlesView.as_view(), name='all_articles')
 ]
