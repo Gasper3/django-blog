@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import RegisterView, AccountView
+from .views import *
 
 urlpatterns = [
     path('account/<int:pk>', AccountView.as_view(), name='account_profile'),
