@@ -157,4 +157,3 @@ class ArticleUpdateViewTests(TestCase):
             self.assertEqual(response.context['article'].title, article.title)
         else:
             raise self.failureException('User is not logged in')
-
