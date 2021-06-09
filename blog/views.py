@@ -45,7 +45,7 @@ class ArticleDetailView(generic.DetailView):
         return context
 
 
-@method_decorator(login_required, name='get')
+@method_decorator(login_required(login_url='/account/login/'), name='get')
 class ArticleUpdateView(generic.UpdateView):
     model = Article
     template_name = 'blog/article/edit.html'
