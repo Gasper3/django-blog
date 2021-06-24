@@ -7,6 +7,8 @@ My first app writen in Django. It's simple blog app.
 
 ## TODO
 * managers
+* log
+* cache
 
 ## Status
 Project is: _in progress_
