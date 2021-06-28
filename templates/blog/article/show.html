@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load cache %}
+{% cache 480 article_content article.pk %}
     <div class="col-md-12">
         {% include 'components/messages.html' %}
         <div class="article p-2 mb-2">
@@ -40,4 +42,5 @@
             </div>
         {% endfor %}
     </div>
+{% endcache %}
 {% endblock %}
