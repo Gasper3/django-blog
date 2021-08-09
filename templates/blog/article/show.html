@@ -14,6 +14,7 @@
                 <a href="{% url 'article_edit' article.slug %}">Edit article</a>
             {% endif %}
         </div>
+{% endcache %}
         <div class="col-md-12 p-0">
             <h2>Comments ({{ article.comments.count }})</h2>
             {% if user.is_authenticated %}
@@ -42,5 +43,4 @@
             </div>
         {% endfor %}
     </div>
-{% endcache %}
 {% endblock %}

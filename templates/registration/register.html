@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Sign up</h1>
     <form method="post" action="{% url 'app_register' %}">
+        <h1>Sign up</h1>
         {% csrf_token %}
         <div class="form-group">
             {% for field in form %}
