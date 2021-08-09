@@ -6,12 +6,10 @@ My first app writen in Django. It's simple blog app.
 * Django 3.1.7
 
 ## TODO
-* managers
-* log
-* cache
+
 
 ## Status
-Project is: _in progress_
+Project is: _done_
 
 ## Contact
 Created by [@Gasper3](https://github.com/Gasper3) - feel free to contact me!
