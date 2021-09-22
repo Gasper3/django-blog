@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  mysql_db:
+    image: mysql:8.0.26
+    environment:
+      - MYSQL_HOST=localhost
+      - MYSQL_DATABASE=django_blog
+      - MYSQL_USER=kacper
+      - MYSQL_PASSWORD=qwerty
+      - MYSQL_ROOT_PASSWORD=qwerty
+    volumes:
+      - data:/var/lib/mysql
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - migrations
+    links:
+      - mysql_db
+  migrations:
+    build: .
+    command: python manage.py migrate
+    volumes:
+      - .:/code
+    links:
+      - mysql_db
+    depends_on:
+      - mysql_db
+
+volumes:
+  data:

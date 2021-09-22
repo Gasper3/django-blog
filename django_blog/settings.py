@@ -84,11 +84,11 @@ CACHES = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'mysql.connector.django',
         'NAME': 'django_blog',
         'USER': 'kacper',
         'PASSWORD': 'qwerty',
-        'HOST': '127.0.0.1',
+        'HOST': 'mysql_db',
         'PORT': '3306',
     }
 }
