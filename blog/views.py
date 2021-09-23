@@ -60,7 +60,7 @@ class ArticleUpdateView(generic.UpdateView):
         return super().get(self, request)
 
 
-@method_decorator(login_required, name='get')
+@method_decorator(login_required(login_url='/account/login/'), name='get')
 class ArticleCreateView(generic.CreateView):
     model = Article
     template_name = 'blog/article/create.html'
