@@ -83,13 +83,22 @@ CACHES = {
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
+    # mysql for docker installation
+    # 'default': {
+    #     'ENGINE': 'mysql.connector.django',
+    #     'NAME': 'django_blog',
+    #     'USER': 'kacper',
+    #     'PASSWORD': 'qwerty',
+    #     'HOST': 'mysql_db',
+    #     'PORT': '3306',
+    # }
     'default': {
-        'ENGINE': 'mysql.connector.django',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'django_blog',
-        'USER': 'kacper',
-        'PASSWORD': 'qwerty',
-        'HOST': 'mysql_db',
-        'PORT': '3306',
+        'USER': 'gasper',
+        'PASSWORD': 'qwe',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
