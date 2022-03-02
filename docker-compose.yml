@@ -1,36 +1,47 @@
 version: "3.9"
 
 services:
-  mysql_db:
-    image: mysql:8.0.26
+  postgres:
+    image: postgres:14
     environment:
-      - MYSQL_HOST=localhost
-      - MYSQL_DATABASE=django_blog
-      - MYSQL_USER=kacper
-      - MYSQL_PASSWORD=qwerty
-      - MYSQL_ROOT_PASSWORD=qwerty
+      - POSTGRES_DB=django_blog
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     volumes:
-      - data:/var/lib/mysql
+      - django_blog_db:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      - DB_NAME=django_blog
+      - DB_HOST=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_PORT=5432
     volumes:
       - .:/app
     ports:
       - "8000:8000"
     depends_on:
       - migrations
-    links:
-      - mysql_db
   migrations:
     build: .
+    environment:
+      - DB_NAME=django_blog
+      - DB_HOST=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_PORT=5432
     command: python manage.py migrate
-    volumes:
-      - .:/code
-    links:
-      - mysql_db
     depends_on:
-      - mysql_db
+      - postgres
 
 volumes:
-  data:
+  django_blog_db:
